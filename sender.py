@@ -53,7 +53,7 @@ def sending_msg_to_queue(q_name: str, msg: dict) -> None:
     :param msg: message being sent
     """
     prop = pika.BasicProperties(delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE)
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+    connection = pika.BlockingConnection(pika.ConnectionParameters('gateway.docker.internal'))
     channel = connection.channel()
     channel.queue_declare(queue=q_name, durable=True)
     channel.basic_publish(exchange='', routing_key=q_name, properties=prop, body=json.dumps(msg))
@@ -61,11 +61,13 @@ def sending_msg_to_queue(q_name: str, msg: dict) -> None:
 
 
 if __name__ == '__main__':
+    logger.debug(f'sender has started')
     try:
         with connect(
                 host=os.getenv('host'),
                 user=os.getenv('user'),
                 password=os.getenv('password'),
+                port=3308
         ) as connection:
             create_db_query = 'CREATE DATABASE IF NOT EXISTS Parsing'
             with connection.cursor() as cursor:

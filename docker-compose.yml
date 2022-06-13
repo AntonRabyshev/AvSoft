@@ -1,0 +1,41 @@
+version: "3.7"
+
+services:
+  db:
+    container_name: avsoft-mysql-1
+    image: mysql:5.7
+    environment:
+      MYSQL_TCP_PORT: 3308
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: Parsing
+      MYSQL_HOST: db
+    ports:
+      - "3308:3308"
+    expose:
+      - 3308
+  rabbit:
+    hostname: host.docker.internal
+    container_name: rabbitmq
+    image: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    expose:
+      - 15672
+      - 5672
+  app:
+    command: bash -c "cd av_docker && ./wrapper.sh"
+    container_name: app
+    image: app
+    depends_on:
+      - db
+      - rabbit
+    environment:
+      HOST: db
+      PORT: 3308
+      USER: root
+      PASSWORD: root
+      NAME: Parsing
+    links:
+      - db
+      - rabbit

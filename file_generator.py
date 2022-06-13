@@ -28,7 +28,8 @@ def file_gen(url_address: str) -> Generator[str, None, None]:
 
 
 if __name__ == '__main__':
-    url = input('Enter website address')
+    logger.debug(f'file gen has started')
+    url = os.getenv('sitemap_url')
     if url.startswith('www'):
         url = 'http://' + url
     elif not url.startswith('http'):

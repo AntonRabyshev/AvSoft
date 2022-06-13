@@ -24,6 +24,7 @@ class Database:
             user=os.getenv('user'),
             password=os.getenv('password'),
             database='Parsing',
+            port=3308
         )
         self.__cursor = self.__conn.cursor()
 
@@ -121,7 +122,7 @@ def receiving_message() -> None:
     """
     Establishing connection with RabbitMQ and receiving message with path to file from "Parsing" queue
     """
-    connection_rmq = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+    connection_rmq = pika.BlockingConnection(pika.ConnectionParameters(host='gateway.docker.internal'))
     channel = connection_rmq.channel()
     channel.queue_declare(queue='Parsing', durable=True)
 
@@ -140,6 +141,7 @@ def receiving_message() -> None:
 
 
 if __name__ == '__main__':
+    logger.debug(f'parser has started')
     try:
         # создаем таблицу
         with Database() as db:

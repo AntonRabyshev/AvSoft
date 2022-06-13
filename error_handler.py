@@ -31,7 +31,7 @@ def receiving_message() -> None:
     """
     Establishing connection with RabbitMQ and receiving message with path to file from "Errors" queue
     """
-    connection_rmq = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+    connection_rmq = pika.BlockingConnection(pika.ConnectionParameters(host='gateway.docker.internal'))
     channel = connection_rmq.channel()
     channel.queue_declare(queue='Errors', durable=True)
 
@@ -48,6 +48,7 @@ def receiving_message() -> None:
 
 
 if __name__ == '__main__':
+    logger.debug(f'error_handler has started')
     try:
         receiving_message()
     except KeyboardInterrupt:

@@ -39,6 +39,7 @@ def write_words_into_file(path_to_folder: str) -> None:
 
 
 if __name__ == '__main__':
+    logger.debug(f'reader has started')
     try:
         if not os.path.exists(path):
             os.mkdir(path)

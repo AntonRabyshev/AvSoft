@@ -1,0 +1,9 @@
+tenacity~=8.0.1
+pika~=1.2.1
+python-dotenv~=0.20.0
+mysql-connector-python~=8.0.29
+watchdog~=2.1.8
+requests~=2.27.1
+bs4~=0.0.1
+beautifulsoup4~=4.11.1
+pyTelegramBotAPI==4.5.1
